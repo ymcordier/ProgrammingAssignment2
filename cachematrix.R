@@ -1,6 +1,6 @@
 ##
 ## This function creates a special "matrix" object from a matrix
-## This object contains a set of functions:
+## This object contains a set of variable and functions:
 ## - to set or get the value of the matrix
 ## - to set or get the value of a its inverse
 ##
