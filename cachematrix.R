@@ -2,22 +2,29 @@
 ## This function creates a special "matrix" object from a matrix
 ## This object contains a set of functions:
 ## - to set or get the value of the matrix
-## - to set or get the value of a computation
+## - to set or get the value of a its inverse
 ##
 makeCacheMatrix <- function(x = matrix()) {
-        m <- NULL
-        # set the value of the matrix
-        set <- function(y) {
-                x <<- y
-                m <<- NULL
-        }
-        # get the value of the matrix	
-        get <- function() x
-        # set the value of the computation result
-        setresult <- function(computation) m <<- computation
-        # get the value of the computation result
-        getresult <- function() m
+
+        # Initialize the inverse
+        i <- NULL
         
+        # method to set the matrix
+        set <- function(matrix) {
+                m <<- matrix
+                i <<- NULL
+        }
+        
+        # method to get the matrix	
+        get <- function() m
+        
+        # method to set the inverse
+        setresult <- function(inverse) i <<- inverse
+        
+        # method to get the inverse
+        getresult <- function() i
+        
+        # return the list of the methods of the special object
         list(set = set, get = get,
              setresult = setresult,
              getresult = getresult)
@@ -31,7 +38,7 @@ makeCacheMatrix <- function(x = matrix()) {
 ##
 cacheSolve <- function(x, ...) {
         
-        ## First try to get the result directly from the object 'x'
+        # First try to get the result directly from the object 'x'
         m <- x$getresult()
         
         if(!is.null(m)) {
@@ -41,13 +48,17 @@ cacheSolve <- function(x, ...) {
                 return(m)
         }
         
-        ## Result was NOT found in cache of 'x' and should be computed now
-        ## 1. get the content of 'x' matrix
-        data <- x$get()
-        ## 2. compute the inverse
-        m <- solve(data, ...)
-        ## 3. store the result into cache of 'x'
-        x$setresult(m)
-        ## 4. display the result just computed
+        # Result was NOT found in cache of 'x' and should be computed now
+        
+                # 1. get the content of 'x' matrix
+                data <- x$get()
+                
+                # 2. compute the inverse
+                m <- solve(data, ...)
+                
+                # 3. store the result into cache of 'x'
+                x$setresult(m)
+        
+        # Display the result just computed
         m
 }
